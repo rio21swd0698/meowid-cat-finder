@@ -1,19 +1,48 @@
 
 import React, { useState } from 'react';
-import { Upload, Camera, CheckCircle } from 'lucide-react';
+import { Upload, Camera, CheckCircle, AlertCircle } from 'lucide-react';
 
 const UploadArea = () => {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isValidating, setIsValidating] = useState(false);
   const [result, setResult] = useState<any>(null);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const validateCatImage = async (imageData: string): Promise<boolean> => {
+    // Simulasi validasi AI untuk mendeteksi kucing
+    // Dalam implementasi nyata, ini akan menggunakan model AI seperti TensorFlow.js
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        // Simulasi: 85% kemungkinan gambar valid sebagai kucing
+        const isValid = Math.random() > 0.15;
+        resolve(isValid);
+      }, 1500);
+    });
+  };
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      // Reset states
+      setValidationError(null);
+      setResult(null);
+      
       const reader = new FileReader();
-      reader.onload = (e) => {
-        setUploadedImage(e.target?.result as string);
-        simulateAnalysis();
+      reader.onload = async (e) => {
+        const imageData = e.target?.result as string;
+        setUploadedImage(imageData);
+        
+        // Validasi apakah gambar mengandung kucing
+        setIsValidating(true);
+        const isValidCat = await validateCatImage(imageData);
+        setIsValidating(false);
+        
+        if (isValidCat) {
+          simulateAnalysis();
+        } else {
+          setValidationError("Gambar yang diupload bukan foto kucing. Silakan upload foto kucing yang jelas.");
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -35,6 +64,8 @@ const UploadArea = () => {
     setUploadedImage(null);
     setResult(null);
     setIsAnalyzing(false);
+    setValidationError(null);
+    setIsValidating(false);
   };
 
   return (
@@ -45,6 +76,9 @@ const UploadArea = () => {
         </h2>
         <p className="text-gray-600">
           Unggah foto kucing Anda dan kami akan mengidentifikasi rasnya menggunakan AI
+        </p>
+        <p className="text-sm text-orange-600 mt-2 font-medium">
+          ⚠️ Pastikan foto yang diupload adalah foto kucing yang jelas
         </p>
       </div>
 
@@ -70,7 +104,7 @@ const UploadArea = () => {
             />
           </label>
           <p className="text-sm text-gray-400 mt-2">
-            PNG, JPG hingga 10MB
+            PNG, JPG hingga 10MB - Hanya foto kucing
           </p>
         </div>
       ) : (
@@ -96,7 +130,28 @@ const UploadArea = () => {
               />
             </div>
 
-            {isAnalyzing ? (
+            {isValidating ? (
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <p className="text-gray-600">Memvalidasi gambar kucing...</p>
+              </div>
+            ) : validationError ? (
+              <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-lg p-6 border border-red-200">
+                <div className="flex items-center mb-4">
+                  <AlertCircle className="h-6 w-6 text-red-500 mr-2" />
+                  <h4 className="text-lg font-semibold text-red-800">
+                    Validasi Gagal
+                  </h4>
+                </div>
+                <p className="text-red-700 mb-4">{validationError}</p>
+                <button
+                  onClick={resetUpload}
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                >
+                  Coba Upload Lagi
+                </button>
+              </div>
+            ) : isAnalyzing ? (
               <div className="text-center py-8">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
                 <p className="text-gray-600">Sedang menganalisis gambar...</p>
