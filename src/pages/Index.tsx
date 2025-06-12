@@ -17,6 +17,16 @@ const Index = () => {
     navigate('/breeds');
   };
 
+  const handleFeatureClick = (featureType: string) => {
+    if (featureType === 'upload') {
+      navigate('/upload');
+    } else if (featureType === 'ai') {
+      navigate('/about');
+    } else if (featureType === 'info') {
+      navigate('/breeds');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
       <Navbar />
@@ -58,29 +68,38 @@ const Index = () => {
 
           {/* Features */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-4 mx-auto">
+            <button 
+              onClick={() => handleFeatureClick('upload')}
+              className="bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 active:scale-95 cursor-pointer border-2 border-transparent hover:border-purple-200"
+            >
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-4 mx-auto transform transition-transform group-hover:scale-110">
                 <Upload className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-lg font-semibold text-gray-800 mb-2">Upload Mudah</h3>
               <p className="text-gray-600 text-sm">Unggah foto kucing Anda dengan mudah dan cepat</p>
-            </div>
+            </button>
 
-            <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-4 mx-auto">
+            <button 
+              onClick={() => handleFeatureClick('ai')}
+              className="bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 active:scale-95 cursor-pointer border-2 border-transparent hover:border-purple-200"
+            >
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-4 mx-auto transform transition-transform group-hover:scale-110">
                 <Search className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-lg font-semibold text-gray-800 mb-2">AI Akurat</h3>
               <p className="text-gray-600 text-sm">Teknologi AI canggih untuk identifikasi yang presisi</p>
-            </div>
+            </button>
 
-            <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-4 mx-auto">
+            <button 
+              onClick={() => handleFeatureClick('info')}
+              className="bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 active:scale-95 cursor-pointer border-2 border-transparent hover:border-purple-200"
+            >
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-4 mx-auto transform transition-transform group-hover:scale-110">
                 <Info className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-lg font-semibold text-gray-800 mb-2">Informasi Lengkap</h3>
               <p className="text-gray-600 text-sm">Dapatkan detail karakteristik dan info perawatan</p>
-            </div>
+            </button>
           </div>
         </div>
       </section>
