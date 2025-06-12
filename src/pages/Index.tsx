@@ -1,11 +1,22 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import UploadArea from '../components/UploadArea';
 import BreedGallery from '../components/BreedGallery';
 import { Search, Upload, Info } from 'lucide-react';
 
 const Index = () => {
+  const navigate = useNavigate();
+
+  const handleStartIdentification = () => {
+    navigate('/upload');
+  };
+
+  const handleExploreBreeds = () => {
+    navigate('/breeds');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
       <Navbar />
@@ -29,11 +40,17 @@ const Index = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-            <button className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full font-semibold hover:from-purple-700 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+            <button 
+              onClick={handleStartIdentification}
+              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full font-semibold hover:from-purple-700 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            >
               <Upload className="mr-2 h-5 w-5" />
               Mulai Identifikasi
             </button>
-            <button className="inline-flex items-center px-8 py-4 border-2 border-purple-300 text-purple-700 rounded-full font-semibold hover:bg-purple-50 transition-all duration-200">
+            <button 
+              onClick={handleExploreBreeds}
+              className="inline-flex items-center px-8 py-4 border-2 border-purple-300 text-purple-700 rounded-full font-semibold hover:bg-purple-50 transition-all duration-200"
+            >
               <Search className="mr-2 h-5 w-5" />
               Jelajahi Ras Kucing
             </button>
